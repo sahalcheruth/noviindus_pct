@@ -2,7 +2,9 @@
 
 from pathlib import Path
 
-
+from pathlib import Path
+from datetime import timedelta
+from decouple import config
 from datetime import timedelta
 
 REST_FRAMEWORK = {
@@ -24,12 +26,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-&v!)*!c2%^l^tt3x-aqlcbf7sdx9-4bp_)(k2%glb4n-zj48bf'
 
+SECRET_KEY = config("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBDEBUG = config("DEBUG", default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config(
+    "ALLOWED_HOSTS",
+    default="127.0.0.1,localhost"
+).split(",")
 
 
 # Application definition
