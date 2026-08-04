@@ -37,6 +37,33 @@ def find_last_reachable_airport(start_airport, direction):
     return None
 
 
+
+
+def get_route_airports(start_airport, direction):
+    """
+    Retrieve all airports in the selected traversal direction.
+
+    Args:
+        start_airport: Airport object selected by the user.
+        direction: Route direction ("left" or "right").
+
+    Returns:
+        QuerySet containing all airports along the route.
+    """
+
+    if direction == "right":
+        return Airport.objects.filter(
+            position__gte=start_airport.position
+        ).order_by("position")
+
+    elif direction == "left":
+        return Airport.objects.filter(
+            position__lte=start_airport.position
+        ).order_by("-position")
+
+    return Airport.objects.none()
+
+
 def get_longest_duration_airport():
     """
     Retrieve the airport with the highest duration.
@@ -55,3 +82,4 @@ def get_shortest_duration_airport():
         Airport object with the minimum duration.
     """
     return Airport.objects.order_by("duration").first()
+

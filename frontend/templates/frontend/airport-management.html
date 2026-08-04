@@ -1,0 +1,601 @@
+{% extends 'frontend/base.html' %}
+{% load static %}
+
+{% block title %}
+Airport Management
+{% endblock %}
+
+{% block css %}
+<style>
+    :root {
+        --brand-1: #1e3c72;
+        --brand-2: #2a5298;
+    }
+
+    .page-title {
+        font-weight: 700;
+        color: #1a1a2e;
+    }
+
+    /* Cards */
+    .panel-card {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 2px 14px rgba(20, 30, 60, .06);
+        overflow: hidden;
+    }
+
+    .panel-card .card-header {
+        border: none;
+        padding: 1.1rem 1.5rem;
+        font-weight: 600;
+        letter-spacing: .2px;
+    }
+
+    .panel-card .card-header.header-blue {
+        background: linear-gradient(90deg, var(--brand-1), var(--brand-2));
+    }
+
+    .panel-card .card-header.header-green {
+        background: linear-gradient(90deg, #1b9e77, #34d399);
+    }
+
+    .panel-card .card-body {
+        padding: 1.75rem;
+    }
+
+    /* Form */
+    .form-label {
+        font-weight: 600;
+        font-size: .85rem;
+        color: #444a5e;
+    }
+
+    .form-control {
+        border-radius: 10px;
+        border: 1.5px solid #e6e8f0;
+        padding: .65rem .9rem;
+    }
+
+    .form-control:focus {
+        border-color: var(--brand-2);
+        box-shadow: 0 0 0 .2rem rgba(42, 82, 152, .15);
+    }
+
+    #airportForm .btn-primary {
+        background: linear-gradient(90deg, var(--brand-1), var(--brand-2));
+        border: none;
+        border-radius: 10px;
+        padding: .75rem;
+        font-weight: 600;
+        letter-spacing: .3px;
+    }
+
+    #airportForm .btn-primary:hover {
+        filter: brightness(1.08);
+    }
+
+    /* Table */
+    .table-responsive {
+        border-radius: 12px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    #airportTable, .table {
+        margin-bottom: 0;
+    }
+
+    .table thead th {
+        background: #f4f6fb;
+        color: #6c7086;
+        font-size: .78rem;
+        text-transform: uppercase;
+        letter-spacing: .5px;
+        font-weight: 700;
+        border-bottom: none;
+        padding: .9rem 1rem;
+        white-space: nowrap;
+    }
+
+    .table tbody td {
+        padding: .85rem 1rem;
+        vertical-align: middle;
+        color: #2e3348;
+        font-size: .925rem;
+        border-color: #eef0f6;
+    }
+
+    .table tbody tr {
+        transition: background .15s ease;
+    }
+
+    .table tbody tr:hover {
+        background: #f8f9fd;
+    }
+
+    .table-bordered {
+        border: none;
+    }
+
+    /* Action buttons inside rows (targets buttons injected by airport.js) */
+    #airportTable .btn {
+        border-radius: 8px;
+        padding: .3rem .65rem;
+        font-size: .8rem;
+        border: none;
+        white-space: nowrap;
+    }
+
+    #airportTable .btn-warning,
+    #airportTable .btn-primary {
+        background: linear-gradient(90deg, var(--brand-1), var(--brand-2));
+        color: #fff;
+    }
+
+    #airportTable .btn-danger {
+        background: linear-gradient(90deg, #dc2626, #f87171);
+        color: #fff;
+    }
+
+    #airportTable .btn + .btn {
+        margin-left: .3rem;
+    }
+
+    /* Alert */
+    #alertBox {
+        border: none;
+        border-radius: 12px;
+        font-weight: 500;
+    }
+
+    /* Modal */
+    .modal-content {
+        border: none;
+        border-radius: 16px;
+        overflow: hidden;
+    }
+
+    .modal-header {
+        background: linear-gradient(90deg, var(--brand-1), var(--brand-2));
+        border: none;
+        padding: 1.25rem 1.5rem;
+    }
+
+    .modal-header h5 {
+        font-weight: 600;
+        margin: 0;
+    }
+
+    .modal-body {
+        padding: 1.75rem;
+    }
+
+    .modal-body label {
+        font-weight: 600;
+        font-size: .85rem;
+        color: #444a5e;
+        margin-bottom: .35rem;
+        display: block;
+    }
+
+    .modal-footer {
+        border: none;
+        padding: 1.1rem 1.5rem;
+    }
+
+    .modal-footer .btn {
+        border-radius: 8px;
+        padding: .5rem 1.3rem;
+        font-weight: 600;
+    }
+
+    .modal-footer .btn-primary {
+        background: linear-gradient(90deg, var(--brand-1), var(--brand-2));
+        border: none;
+    }
+
+    /* ============ RESPONSIVE / MOBILE ============ */
+
+    @media (max-width: 991.98px) {
+        .panel-card .card-body {
+            padding: 1.4rem;
+        }
+    }
+
+    @media (max-width: 767.98px) {
+
+        .page-title {
+            font-size: 1.5rem;
+        }
+
+        .panel-card .card-header {
+            padding: .9rem 1.15rem;
+        }
+
+        .panel-card .card-header h5 {
+            font-size: 1rem;
+        }
+
+        .panel-card .card-body {
+            padding: 1.15rem;
+        }
+
+        /* Stack form fields with slightly tighter spacing */
+        #airportForm .mb-3,
+        #airportForm .mb-4 {
+            margin-bottom: 1rem !important;
+        }
+
+        .form-control {
+            font-size: .95rem;
+            padding: .6rem .8rem;
+        }
+
+        /* Table becomes horizontally scrollable, smaller text */
+        .table thead th {
+            font-size: .7rem;
+            padding: .7rem .6rem;
+        }
+
+        .table tbody td {
+            font-size: .85rem;
+            padding: .65rem .6rem;
+        }
+
+        /* Action buttons stack vertically inside their cell */
+        #airportTable td:last-child {
+            display: flex;
+            flex-direction: column;
+            gap: .35rem;
+            align-items: stretch;
+            min-width: 90px;
+        }
+
+        #airportTable .btn + .btn {
+            margin-left: 0;
+        }
+
+        #airportTable .btn {
+            width: 100%;
+            padding: .4rem .5rem;
+            font-size: .78rem;
+        }
+
+        /* Modal fills more of the screen on mobile */
+        .modal-dialog {
+            margin: .75rem;
+        }
+
+        .modal-body {
+            padding: 1.25rem;
+        }
+
+        .modal-header {
+            padding: 1rem 1.25rem;
+        }
+
+        .modal-footer {
+            padding: .9rem 1.25rem;
+            flex-wrap: wrap;
+            gap: .5rem;
+        }
+
+        .modal-footer .btn {
+            flex: 1 1 auto;
+        }
+    }
+
+    @media (max-width: 575.98px) {
+
+        .row.mb-4 .text-muted {
+            font-size: .875rem;
+        }
+
+        #airportForm .btn-primary,
+        .d-grid .btn {
+            font-size: .9rem;
+        }
+
+        /* Give the table its own horizontal scroll cue */
+        .table-responsive {
+            border: 1px solid #eef0f6;
+        }
+
+        .table thead th:first-child,
+        .table tbody td:first-child {
+            padding-left: .75rem;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="row mb-4">
+
+    <div class="col">
+
+        <h2 class="page-title">
+
+            Airport Management
+
+        </h2>
+
+        <p class="text-muted">
+
+            Add, update and delete airport routes.
+
+        </p>
+
+    </div>
+
+</div>
+
+<!-- Alert -->
+
+<div
+    id="alertBox"
+    class="alert d-none">
+</div>
+
+<div class="row g-4">
+
+    <!-- Add Airport -->
+
+    <div class="col-12 col-lg-4">
+
+        <div class="card panel-card h-100">
+
+            <div class="card-header header-blue text-white">
+
+                <h5 class="mb-0">
+                    <i class="bi bi-plus-circle me-2"></i>
+                    Add Airport
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <form id="airportForm">
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Airport Code
+
+                        </label>
+
+                        <input
+                            type="text"
+                            id="airportCode"
+                            class="form-control"
+                            placeholder="Example : COK"
+                            required>
+
+                    </div>
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+
+                            Position
+
+                        </label>
+
+                        <input
+                            type="number"
+                            id="position"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label class="form-label">
+
+                            Duration
+
+                        </label>
+
+                        <input
+                            type="number"
+                            id="duration"
+                            class="form-control"
+                            required>
+
+                    </div>
+
+                    <div class="d-grid">
+
+                        <button
+                            class="btn btn-primary">
+
+                            <i class="bi bi-save me-1"></i>
+                            Save Airport
+
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Airport List -->
+
+    <div class="col-12 col-lg-8">
+
+        <div class="card panel-card h-100">
+
+            <div class="card-header header-blue text-white">
+
+                <h5 class="mb-0">
+                    <i class="bi bi-list-ul me-2"></i>
+                    Airport List
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div class="table-responsive">
+
+                    <table
+                        class="table table-bordered table-hover">
+
+                        <thead>
+
+                        <tr>
+
+                            <th>#</th>
+
+                            <th>Airport</th>
+
+                            <th>Position</th>
+
+                            <th>Duration</th>
+
+                            <th width="170">
+
+                                Action
+
+                            </th>
+
+                        </tr>
+
+                        </thead>
+
+                        <tbody id="airportTable">
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Edit Modal -->
+
+<div
+    class="modal fade"
+    id="editModal">
+
+    <div class="modal-dialog">
+
+        <div class="modal-content">
+
+            <div class="modal-header text-white">
+
+                <h5>
+                    <i class="bi bi-pencil-square me-2"></i>
+                    Edit Airport
+                </h5>
+
+                <button
+                    class="btn-close btn-close-white"
+                    data-bs-dismiss="modal">
+
+                </button>
+
+            </div>
+
+            <div class="modal-body">
+
+                <input
+                    type="hidden"
+                    id="editId">
+
+                <div class="mb-3">
+
+                    <label>
+
+                        Airport Code
+
+                    </label>
+
+                    <input
+                        id="editCode"
+                        class="form-control">
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>
+
+                        Position
+
+                    </label>
+
+                    <input
+                        id="editPosition"
+                        type="number"
+                        class="form-control">
+
+                </div>
+
+                <div class="mb-3">
+
+                    <label>
+
+                        Duration
+
+                    </label>
+
+                    <input
+                        id="editDuration"
+                        type="number"
+                        class="form-control">
+
+                </div>
+
+            </div>
+
+            <div class="modal-footer">
+
+                <button
+                    class="btn btn-secondary"
+                    data-bs-dismiss="modal">
+
+                    Close
+
+                </button>
+
+                <button
+                    class="btn btn-primary"
+                    onclick="updateAirport()">
+
+                    Update
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+
+<script src="{% static 'js/airport.js' %}"></script>
+
+{% endblock %}

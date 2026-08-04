@@ -1,0 +1,211 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Flight Routes System{% endblock %}</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet"
+        href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+    <style>
+        :root {
+            --brand-1: #1e3c72;
+            --brand-2: #1a273d;
+        }
+
+        .navbar-flight {
+            background: linear-gradient(90deg, var(--brand-1) 0%, var(--brand-2) 100%);
+            padding-top: .65rem;
+            padding-bottom: .65rem;
+        }
+
+        .navbar-flight .navbar-brand {
+            font-size: 1.25rem;
+            letter-spacing: .3px;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+
+        .navbar-flight .navbar-brand i {
+            font-size: 1.4rem;
+            color: #ffd166;
+        }
+
+        .navbar-flight .nav-link {
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+            color: rgba(255, 255, 255, .85) !important;
+            font-weight: 500;
+            padding: .5rem 1rem !important;
+            border-radius: 999px;
+            transition: all .2s ease;
+            margin: 0 .15rem;
+        }
+
+        .navbar-flight .nav-link:hover {
+            color: #fff !important;
+            background: rgba(255, 255, 255, .12);
+        }
+
+        .navbar-flight .nav-link.active {
+            color: #fff !important;
+            background: rgba(255, 255, 255, .18);
+            box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .25);
+        }
+
+        .navbar-flight .nav-link i {
+            font-size: 1rem;
+        }
+
+        .btn-logout {
+            display: flex;
+            align-items: center;
+            gap: .4rem;
+            background: rgba(255, 255, 255, .1);
+            color: #fff;
+            border: 1px solid rgba(255, 255, 255, .35);
+            border-radius: 999px;
+            padding: .4rem 1rem;
+            font-size: .875rem;
+            font-weight: 500;
+            transition: all .2s ease;
+        }
+
+        .btn-logout:hover {
+            background: #dc3545;
+            border-color: #dc3545;
+            color: #fff;
+        }
+
+        .navbar-flight .navbar-toggler {
+            border-color: rgba(255, 255, 255, .4);
+        }
+
+        .navbar-flight .navbar-toggler:focus {
+            box-shadow: 0 0 0 .2rem rgba(255, 255, 255, .25);
+        }
+    </style>
+
+    {% block css %}{% endblock %}
+</head>
+
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark navbar-flight shadow-sm sticky-top">
+        <div class="container-fluid">
+
+            <a class="navbar-brand fw-bold" href="/dashboard/">
+                <!-- <i class="bi bi-airplane-fill"></i> -->
+                FLIPLAY
+            </a>
+
+            <button class="navbar-toggler"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#navbarNav">
+
+                <span class="navbar-toggler-icon"></span>
+
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNav">
+
+                <ul class="navbar-nav ms-auto align-items-lg-center">
+
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/dashboard/' %}active{% endif %}" href="/dashboard/">
+                            <i class="bi bi-speedometer2"></i>
+                            Dashboard
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/airport-management/' %}active{% endif %}" href="/airport-management/">
+                            <i class="bi bi-building"></i>
+                            Airport Management
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link {% if request.path == '/route-information/' %}active{% endif %}" href="/route-information/">
+                            <i class="bi bi-signpost-split"></i>
+                            Route Information
+                        </a>
+                    </li>
+
+                    <li class="nav-item ms-lg-3 mt-2 mt-lg-0">
+                        <button class="btn btn-logout" onclick="logout()">
+                            <i class="bi bi-box-arrow-right"></i>
+                            Logout
+                        </button>
+                    </li>
+
+                </ul>
+
+            </div>
+
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="container py-4">
+
+        {% block content %}
+
+        {% endblock %}
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-light border-top py-3 mt-5">
+
+        <div class="container text-center">
+
+            <small class="text-muted">
+
+                © 2026 FLIPLAY
+
+            </small>
+
+        </div>
+
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Common JS -->
+    <script>
+
+        function logout() {
+
+            localStorage.removeItem("access");
+
+            localStorage.removeItem("refresh");
+
+            window.location.href = "/login/";
+
+        }
+
+    </script>
+
+    {% block js %}
+
+    {% endblock %}
+
+</body>
+
+</html>

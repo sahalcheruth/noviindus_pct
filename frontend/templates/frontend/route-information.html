@@ -1,0 +1,290 @@
+{% extends 'frontend/base.html' %}
+{% load static %}
+
+{% block title %}
+Route Information
+{% endblock %}
+
+{% block css %}
+<link rel="stylesheet" href="{% static 'css/route.css' %}">
+{% endblock %}
+
+{% block content %}
+
+<div class="route-page">
+
+<div class="route-hero">
+
+    <div>
+
+        <span class="route-eyebrow">
+            <span class="blip"></span>
+            Flight Ops · Route Finder
+        </span>
+
+        <h2 class="page-title">
+            Route Information
+        </h2>
+
+        <p class="text-muted">
+            Search airport routes and view duration statistics.
+        </p>
+
+    </div>
+
+</div>
+
+<!-- Alert -->
+
+<div id="alertBox" class="alert d-none"></div>
+
+<div class="row g-4">
+
+    <!-- Search Route -->
+
+    <div class="col-lg-5">
+
+        <div class="card card--search">
+
+            <div class="card-header">
+
+                <h5 class="mb-0">
+                    Search
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <form id="searchForm">
+
+                    <div class="mb-3">
+
+                        <label class="form-label">
+                            Airport
+                        </label>
+
+                        <select
+                            id="airportCode"
+                            class="form-select"
+                            required>
+
+                            <option value="">
+                                Select Airport
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="mb-4">
+
+                        <label class="form-label">
+                            Direction
+                        </label>
+
+                        <select
+                            id="direction"
+                            class="form-select">
+
+                            <option value="left">
+                                Left
+                            </option>
+
+                            <option value="right">
+                                Right
+                            </option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="d-grid">
+
+                        <button
+                            class="btn btn-primary">
+                            Search Route
+                        </button>
+
+                    </div>
+
+                </form>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- Search Result -->
+
+    <div class="col-lg-7">
+
+        <div class="card card--result">
+
+            <div class="card-header">
+
+                <h5 class="mb-0">
+                    Result
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <table class="table">
+
+                    <tr>
+
+                        <th width="200">
+                            Start Airport
+                        </th>
+
+                        <td id="startAirport">
+                            -
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>
+                            Direction
+                        </th>
+
+                        <td id="routeDirection">
+                            -
+                        </td>
+
+                    </tr>
+
+                    <tr>
+
+                        <th>
+                            Last Reachable Airport
+                        </th>
+
+                        <td id="lastAirport">
+                            -
+                        </td>
+
+                    </tr>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Route Visualization -->
+
+<div class="row mt-4">
+
+    <div class="col-12">
+
+        <div class="card card--viz">
+
+            <div class="card-header">
+
+                <h5 class="mb-0">
+                    Route Visualization
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div id="routeVisualization" class="w-100 viz-frame">
+
+                    <svg
+                        id="routeSvg"
+                        width="100%"
+                        height="220">
+
+                    </svg>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Statistics -->
+
+<div class="row mt-4 g-4">
+
+    <div class="col-md-6">
+
+        <div class="card stat-card card--long">
+
+            <div class="card-header">
+
+                <h5 class="mb-0">
+                    Longest Duration
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div id="longAirport" class="stat-airport">
+                    -
+                </div>
+
+                <div id="longDuration" class="stat-duration">
+                    -
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="col-md-6">
+
+        <div class="card stat-card card--short">
+
+            <div class="card-header">
+
+                <h5 class="mb-0">
+                    Shortest Duration
+                </h5>
+
+            </div>
+
+            <div class="card-body">
+
+                <div id="shortAirport" class="stat-airport">
+                    -
+                </div>
+
+                <div id="shortDuration" class="stat-duration">
+                    -
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</div>
+
+{% endblock %}
+
+{% block js %}
+
+<script src="{% static 'js/route.js' %}"></script>
+
+{% endblock %}

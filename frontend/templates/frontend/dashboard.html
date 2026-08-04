@@ -1,0 +1,320 @@
+{% extends 'frontend/base.html' %}
+
+{% block title %}
+Dashboard
+{% endblock %}
+
+{% block css %}
+<style>
+    :root {
+        --brand-1: #1e3c72;
+        --brand-2: #2a5298;
+    }
+
+    /* Welcome banner */
+    .welcome-banner {
+        background: linear-gradient(120deg, var(--brand-1) 0%, var(--brand-2) 100%);
+        border-radius: 16px;
+        padding: 2.25rem 2.5rem;
+        color: #fff;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .welcome-banner::before {
+        content: "";
+        position: absolute;
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .07);
+        top: -100px;
+        right: -60px;
+    }
+
+    .welcome-banner::after {
+        content: "";
+        position: absolute;
+        width: 160px;
+        height: 160px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .06);
+        bottom: -70px;
+        right: 120px;
+    }
+
+    .welcome-banner h2 {
+        font-weight: 700;
+        position: relative;
+        z-index: 1;
+    }
+
+    .welcome-banner p {
+        color: rgba(255, 255, 255, .85);
+        position: relative;
+        z-index: 1;
+        margin-bottom: 0;
+    }
+
+    .welcome-banner .banner-icon {
+        font-size: 3.2rem;
+        color: rgba(255, 255, 255, .35);
+        position: relative;
+        z-index: 1;
+    }
+
+    /* Module cards */
+    .module-card {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 2px 14px rgba(20, 30, 60, .06);
+        transition: transform .25s ease, box-shadow .25s ease;
+        overflow: hidden;
+    }
+
+    .module-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 16px 32px rgba(20, 30, 60, .12);
+    }
+
+    .module-card .card-body {
+        padding: 2.75rem 2rem;
+    }
+
+    .module-icon {
+        width: 84px;
+        height: 84px;
+        border-radius: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto 1.5rem;
+        font-size: 2.1rem;
+        color: #fff;
+    }
+
+    .module-icon.icon-blue {
+        background: linear-gradient(135deg, var(--brand-1), var(--brand-2));
+    }
+
+    .module-icon.icon-green {
+        background: linear-gradient(135deg, #1b9e77, #34d399);
+    }
+
+    .module-card h3 {
+        font-weight: 700;
+        font-size: 1.35rem;
+        color: #1a1a2e;
+    }
+
+    .module-card p.card-desc {
+        color: #8a8fa3;
+        font-size: .925rem;
+        margin-bottom: 1.75rem;
+    }
+
+    .module-card .btn {
+        border-radius: 999px;
+        padding: .55rem 1.6rem;
+        font-weight: 600;
+        border: none;
+    }
+
+    .module-card .btn-open-blue {
+        background: linear-gradient(90deg, var(--brand-1), var(--brand-2));
+        color: #fff;
+    }
+
+    .module-card .btn-open-green {
+        background: linear-gradient(90deg, #1b9e77, #34d399);
+        color: #fff;
+    }
+
+    .module-card .btn:hover {
+        filter: brightness(1.08);
+        color: #fff;
+    }
+
+    /* Features section */
+    .features-card {
+        border: none;
+        border-radius: 16px;
+        box-shadow: 0 2px 14px rgba(20, 30, 60, .06);
+    }
+
+    .features-card .section-label {
+        font-weight: 700;
+        color: #1a1a2e;
+        font-size: 1.05rem;
+        letter-spacing: .2px;
+    }
+
+    .feature-tile {
+        text-align: center;
+        padding: 1.25rem .75rem;
+        border-radius: 14px;
+        transition: background .2s ease;
+    }
+
+    .feature-tile:hover {
+        background: #f4f6fb;
+    }
+
+    .feature-tile .feature-icon-wrap {
+        width: 60px;
+        height: 60px;
+        border-radius: 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 auto .85rem;
+        font-size: 1.5rem;
+        color: #fff;
+    }
+
+    .feature-tile h6 {
+        font-weight: 600;
+        color: #444a5e;
+        margin-bottom: 0;
+        font-size: .875rem;
+    }
+
+    .bg-grad-blue {
+        background: linear-gradient(135deg, var(--brand-1), var(--brand-2));
+    }
+
+    .bg-grad-green {
+        background: linear-gradient(135deg, #1b9e77, #34d399);
+    }
+
+    .bg-grad-amber {
+        background: linear-gradient(135deg, #d97706, #fbbf24);
+    }
+
+    .bg-grad-red {
+        background: linear-gradient(135deg, #dc2626, #f87171);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- Welcome Banner -->
+<div class="row mb-4">
+    <div class="col">
+        <div class="welcome-banner d-flex align-items-center justify-content-between">
+            <div>
+                <h2 class="mb-2">Welcome back </h2>
+                <p>Manage airports and routes for the Flight Routes System.</p>
+            </div>
+            <div class="d-none d-md-block">
+                <i class="bi bi-airplane-engines banner-icon"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Module Cards -->
+<div class="row g-4">
+
+    <!-- Airport Management -->
+    <div class="col-md-6">
+        <div class="card module-card h-100">
+            <div class="card-body text-center">
+
+                <div class="module-icon icon-blue">
+                    <i class="bi bi-building"></i>
+                </div>
+
+                <h3>Airport Management</h3>
+                <p class="card-desc">Create, update, delete and view airport routes.</p>
+
+                <a href="{% url 'airport-management' %}" class="btn btn-open-blue">
+                    Open
+                    <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Route Information -->
+    <div class="col-md-6">
+        <div class="card module-card h-100">
+            <div class="card-body text-center">
+
+                <div class="module-icon icon-green">
+                    <i class="bi bi-signpost-split"></i>
+                </div>
+
+                <h3>Route Information</h3>
+                <p class="card-desc">Search routes and view airport statistics.</p>
+
+                <a href="{% url 'route-information' %}" class="btn btn-open-green">
+                    Open
+                    <i class="bi bi-arrow-right ms-1"></i>
+                </a>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- Project Features -->
+<div class="row mt-5">
+    <div class="col">
+        <div class="card features-card">
+            <div class="card-body p-4">
+
+                <span class="section-label">
+                    <i class="bi bi-stars me-1"></i>
+                    Features
+                </span>
+
+                <div class="row mt-4 g-3">
+
+                    <div class="col-6 col-md-3">
+                        <div class="feature-tile">
+                            <div class="feature-icon-wrap bg-grad-blue">
+                                <i class="bi bi-plus-circle-fill"></i>
+                            </div>
+                            <h6>Airport </h6>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <div class="feature-tile">
+                            <div class="feature-icon-wrap bg-grad-green">
+                                <i class="bi bi-search"></i>
+                            </div>
+                            <h6>Route Search</h6>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <div class="feature-tile">
+                            <div class="feature-icon-wrap bg-grad-amber">
+                                <i class="bi bi-arrow-up-circle-fill"></i>
+                            </div>
+                            <h6>Longest Duration</h6>
+                        </div>
+                    </div>
+
+                    <div class="col-6 col-md-3">
+                        <div class="feature-tile">
+                            <div class="feature-icon-wrap bg-grad-red">
+                                <i class="bi bi-arrow-down-circle-fill"></i>
+                            </div>
+                            <h6>Shortest Duration</h6>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

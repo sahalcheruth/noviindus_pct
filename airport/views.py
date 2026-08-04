@@ -10,10 +10,10 @@ from .models import Airport
 from .serializers import AirportSerializer, RouteSearchSerializer
 from .services import (
     find_last_reachable_airport,
+    get_route_airports,
     get_longest_duration_airport,
     get_shortest_duration_airport,
 )
-
 
 class AirportListCreateAPIView(generics.ListCreateAPIView):
     """
@@ -72,7 +72,8 @@ class SearchRouteAPIView(APIView):
 
     def post(self, request):
         """
-        Search for the last reachable airport.
+        Search for the last reachable airport and return
+        the complete route.
         """
         serializer = RouteSearchSerializer(data=request.data)
 
@@ -92,24 +93,37 @@ class SearchRouteAPIView(APIView):
                     status=status.HTTP_404_NOT_FOUND,
                 )
 
-            # Find the last reachable airport in the selected direction
+            # Find the last reachable airport
             last_airport = find_last_reachable_airport(
                 start_airport,
                 direction,
             )
 
+            # Retrieve every airport in the selected route
+            route_airports = get_route_airports(
+                start_airport,
+                direction,
+            )
+
+            # Convert queryset into a list of airport codes
+            route = [
+                airport.airport_code
+                for airport in route_airports
+            ]
+
             return Response({
                 "start_airport": start_airport.airport_code,
                 "direction": direction,
                 "last_reachable_airport": last_airport.airport_code,
+                "route": route,
             })
 
         return Response(
             serializer.errors,
             status=status.HTTP_400_BAD_REQUEST,
         )
-
-
+        
+        
 class LongestDurationAPIView(APIView):
     """
     API to retrieve the airport with the highest duration.
