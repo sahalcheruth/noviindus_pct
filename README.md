@@ -31,11 +31,11 @@ A Django REST Framework application developed as part of a Django Machine Test. 
 ### Clone the repository
 
 ```bash
-git clone <YOUR_GITHUB_REPOSITORY_URL>
+git clone https://github.com/sahalcheruth/noviindus_pct.git
 ```
 
 ```bash
-cd <PROJECT_FOLDER>
+cd noviindus_pct
 ```
 
 ---
@@ -289,4 +289,4 @@ project/
 ---
 
 
-GitHub: https://github.com/<your_username>
+GitHub: https://github.com/sahalcheruth
